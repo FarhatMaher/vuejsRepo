@@ -8,13 +8,13 @@
         <b>Label:</b>  {{post.label}} <br>
         <b>description : </b> {{post.description}}
           <tr/>
-        <b> publie par : </b> {{post.user.name}}
-        </li>
+        <b> publie par : </b> {{post.user.name}} à {{changeDateFormat(post.created_at)}}
+        </li> 
     </ul>
 
    <ul>
         <li v-for="com in comments" :key="com.id">
-       {{com.user.name}} a commenté <tr/>
+       {{com.user.name}} a commenté  : {{changeDateFormat(com.created_at)}} <tr/>
        <b>commentaire :</b>  {{com.comments}} <br>
         </li>
     </ul>
@@ -88,7 +88,10 @@ export default {
         }).catch(err => {
             console.log(err)
         })
-    }
+    },
+     changeDateFormat(date){
+            return new Date(date).toLocaleString();
+     }
 
 }
 };

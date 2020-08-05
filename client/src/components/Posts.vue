@@ -9,8 +9,8 @@
         <b>Label:</b>  {{post.label}} <br>
         <b>description : </b> {{post.description}}
           <tr/>
-        <b> publie par : </b> {{post.user.name}}
-        </li>
+        <b> publie par : </b> {{post.user.name}} à {{changeDateFormat(post.created_at)}}
+        </li> 
     </ul>
 
 </div>
@@ -47,7 +47,11 @@ export default {
      } ,
      showPostDelails(id){
         this.$router.push({name: 'postDetails', params: {id: id}})
+     },
+     changeDateFormat(date){
+            return new Date(date).toLocaleString();
      }
+     
 }
         
     };
