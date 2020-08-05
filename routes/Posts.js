@@ -162,4 +162,20 @@ posts.put('/update/:id', (req, res, next) => {
     }
 })
 
+
+// GET Comments by UserId
+posts.get('/byUser/:userId', (req, res, next) => {
+    Post.findAll({
+        where: {
+            user_id: req.params.userId
+        }
+    })
+        .then((result) => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })
+})
+
 module.exports = posts

@@ -10,7 +10,8 @@
               <label for="exampleInputPassword1">Password</label>
               <input type="password" class="form-control" id="exampleInputPassword1" v-model="password">
             </div>
-            <button type="submit" class="btn btn-primary">Valider</button>
+            <button type="submit" class="btn btn-primary">connexion</button>
+            <router-link class="nav-link" to="/register">Vous n'avez pas un compte ? inscrivez-vous</router-link>
           </form>
     </div>
     </div>
@@ -35,8 +36,8 @@ export default { data() {
                 console.log(res)
                  this.email='' 
                  this.password='' 
-                 router.push({name: 'Home'}) })
-                 .catch(err => { console.log(err) }) 
+                 router.push({name: 'Posts'}) })
+                 .catch(err => { console.log(err) , alert("Veuillez vérifier vos données") }) 
                  this.emitMethod() }, 
                  emitMethod() { EventBus.$emit('logged-in','loggedin') 
                  }

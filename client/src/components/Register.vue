@@ -25,7 +25,7 @@ import axios from 'axios'
 import router from '../router'
 
 
-export default{
+export default {
     data() {
      return {
          name: '',

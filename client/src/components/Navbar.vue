@@ -18,6 +18,11 @@
                <router-link class="nav-link" to="/profil">Mon profil</router-link>
            </li>
 
+          <li v-if="token  != null ">
+               <a class="nav-link" @click="logOut()">Déconnexion</a>
+           </li>
+           
+
           </ul>
         </div>
       </nav> 
@@ -25,6 +30,7 @@
 </template>
 
 <script>
+import router from '../router'
 import EventBus from './EventBus'
 EventBus.$on('logged-in', test => {
   console.log(test)
@@ -38,11 +44,10 @@ export default {
     }
   },
   methods: {
-    mounted() {
-    EventBus.$on('logged-in', status => {
-    this.auth = status
-})  
-    },
+    logOut(){
+      localStorage.clear();
+      router.push({name:'Login'})
+    }
   },
 }
 </script>

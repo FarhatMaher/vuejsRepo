@@ -8,7 +8,7 @@ import DetailsPost from '../components/DetailsPost'
 import VueRouter from "vue-router";
 import Vue from "vue";
 import Post from "../components/Post"
-
+import profilUpdate from "../components/updateProfile"
 Vue.use(VueRouter)
 const routes = [
     {
@@ -46,7 +46,12 @@ const routes = [
                    path: '/post/:id',
                    name:    'postDetails',
                    component: Post
-               }
+               },
+               {
+                path: '/profil/update',
+                name:    'profilUpdate',
+                component: profilUpdate
+            }
     
 
             

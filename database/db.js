@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize")
 const db = {}
-const sequelize = new Sequelize ("db_groupomania", "root", "224root" , {
+const sequelize = new Sequelize ("db_groupomania", "root", "root" , {
     host: "localhost",
     dialect: "mysql",
     pool : {
@@ -11,6 +11,7 @@ const sequelize = new Sequelize ("db_groupomania", "root", "224root" , {
     }
 })
 
+sequelize.sync();
 db.sequelize = sequelize
 
 module.exports = db

@@ -30,12 +30,35 @@ users.get('/details/:id',(req, res) => {
         }
     })
         .then(user => {
-            res.json({ status:'ok','users':user})
+            res.status(200).json(user)
         })
         .catch(err => {
             res.send('error: ' + err)
         })
 })
+
+//GET ONE USER
+users.put('/update/:id',(req, res) => {
+  
+    const userTO = req.body
+    User.findOne({
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(function (user) {
+      // Check if record exists in db
+      if (user) {
+        user.update(
+            userTO
+        )
+        .then(function (data) {
+            res.send(data)
+        })
+      }
+    })
+})
+
 
 //REGISTER
 users.post('/register',(req, res) => {

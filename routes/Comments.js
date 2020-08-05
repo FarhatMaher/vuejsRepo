@@ -64,10 +64,13 @@ comments.delete('/:id', (req, res, next) => {
 
 // GET Comments by PostId
 comments.get('/byPost/:postId', (req, res, next) => {
+
+    User.hasMany(Comment, {foreignKey: 'user_id'})
+    Comment.belongsTo(User, {foreignKey: 'user_id'})
     Comment.findAll({
         where: {
             post_id: req.params.postId
-        }
+        }, include :[User]
     })
         .then((result) => {
             res.status(200).json(result)
