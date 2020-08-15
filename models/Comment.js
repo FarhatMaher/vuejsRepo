@@ -1,37 +1,31 @@
-const Sequelise = require("sequelize")
-const db = require ("../database/db.js")
-
-module.exports = db.sequelize.define(
+module.exports = function(sequelize, DataTypes) {
+    const Comment = sequelize.define(
     "comment",
     {
         id: {
-            type: Sequelise.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
         },
-        user_id: {
-            type: Sequelise.INTEGER
-        },
-        post_id: {
-            type: Sequelise.INTEGER
-        },
-        comments: {
-            type: Sequelise.TEXT
+        contenu: {
+            type: DataTypes.TEXT
         },
         status: {
-            type: Sequelise.INTEGER
+            type: DataTypes.INTEGER
         },
         created_at: {
-            type: Sequelise.DATE,
-            defaultValue: Sequelise.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         },
         updated_at: {
-            type: Sequelise.DATE,
-            defaultValue: Sequelise.NOW
-
-        }
-    },
-    {
-        timestamps: false
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
     }
-)
+
+})
+Comment.associate = models => {
+    Comment.belongsTo(models.post);
+    Comment.belongsTo(models.user);
+    
+    }
+return Comment }

@@ -1,53 +1,43 @@
-const Sequelise = require("sequelize")
-const db = require ("../database/db.js")
-const User = require("./User")
 
-const Post = db.sequelize.define(
+module.exports = function(sequelize, DataTypes) {
+    var Post = sequelize.define(
     "post",
     {
         id: {
-            type: Sequelise.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
         },
-        label: {
-            type: Sequelise.STRING
+        titre: {
+            type: DataTypes.STRING
         },
         slug: {
-            type: Sequelise.STRING
+            type: DataTypes.STRING
         },
-        description: {
-            type: Sequelise.TEXT
-        },
-        post_type: {
-            type: Sequelise.INTEGER
-        },
-        path: {
-            type: Sequelise.STRING
-        },
-        status: {
-            type: Sequelise.INTEGER
-        },
-        user_id: {
-            type: Sequelise.INTEGER
+        content: {
+            type: DataTypes.TEXT
         },
         created_at: {
-            type: Sequelise.DATE,
-            defaultValue: Sequelise.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         },
         updated_at: {
-            type: Sequelise.DATE,
-            defaultValue: Sequelise.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
 
-        }
-    },
-    {
-        timestamps: false
-    },
+        }, 
+        
+      }
+    
+    
+    )
+    Post.associate = models => {
+        Post.hasMany(models.comment);
+        Post.belongsTo(models.user);
+        Post.hasOne(models.media);
 
-)
-
-//User.hasMany(Post)
-//Post.belongsTo(User)
-
-module.exports = Post
+ }
+        
+        
+    return Post
+}

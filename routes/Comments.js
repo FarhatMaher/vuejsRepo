@@ -2,17 +2,14 @@ const express = require("express")
 const comments = express.Router()
 const cors = require("cors")
 
-const Post = require("../models/Post")
-const User = require("../models/User")
-const Comment = require("../models/Comment")
-
+var db = require('../models/index');
 
 comments.use(cors())
 
 // GET ALL COMMENTS
 comments.get('/list', (req, res, next) => {
 
-    Comment.findAll({ where: {}, include: []})
+    db.comment.findAll({ where: {}, include: []})
         .then(comments => {
             res.json(comments)
         })
@@ -23,20 +20,20 @@ comments.get('/list', (req, res, next) => {
 
 // ADD COMMENT
 comments.post('/add', (req, res, next) => {
-    if (!req.body.user_id || !req.body.post_id || !req.body.comments) {
+    if (!req.body.userId || !req.body.postId || !req.body.contenu) {
         res.status(400)
         res.json({
             error: 'Bad Data'
         })
     } else {
         const commentData = {
-            user_id: req.body.user_id,
-            post_id: req.body.post_id,
-            comments: req.body.comments,
+            userId: req.body.userId,
+            postId: req.body.postId,
+            comments: req.body.contenu,
             status: 1
         }
 
-        Comment.create(commentData)
+        db.comment.create(commentData)
             .then(() => {
                 res.send('COMMENT Added!')
             })
@@ -49,7 +46,7 @@ comments.post('/add', (req, res, next) => {
 
 // Delete Comment
 comments.delete('/:id', (req, res, next) => {
-    Comment.destroy({
+    db.comment.destroy({
         where: {
             id: req.params.id
         }
@@ -65,12 +62,11 @@ comments.delete('/:id', (req, res, next) => {
 // GET Comments by PostId
 comments.get('/byPost/:postId', (req, res, next) => {
 
-    User.hasMany(Comment, {foreignKey: 'user_id'})
-    Comment.belongsTo(User, {foreignKey: 'user_id'})
-    Comment.findAll({
+
+    db.comment.findAll({
         where: {
-            post_id: req.params.postId
-        }, include :[User]
+            postId: req.params.postId
+        }, include :[db.user]
     })
         .then((result) => {
             res.status(200).json(result)
@@ -81,9 +77,9 @@ comments.get('/byPost/:postId', (req, res, next) => {
 })
 // GET Comments by UserId
 comments.get('/byUser/:userId', (req, res, next) => {
-    Comment.findAll({
+    db.comment.findAll({
         where: {
-            user_id: req.params.userId
+            userId: req.params.userId
         }
     })
         .then((result) => {
@@ -93,6 +89,29 @@ comments.get('/byUser/:userId', (req, res, next) => {
             res.send('error: ' + err)
         })
 })
+
+// Update Comment
+comments.put('/:id', (req, res, next) => {
+
+     newComment = req.body
+    if (!req.body.comments) {
+        res.status(400)
+        res.json({
+            error: 'Bad Data'
+        })
+    } else {
+        db.comment.update(
+            {newComment},
+            { where: { id: req.params.id } }
+        )
+            .then(() => {
+                res.send('comment Updated!')
+            })
+            .error(err => handleError(err))
+    
+}
+})
+
 
 
 

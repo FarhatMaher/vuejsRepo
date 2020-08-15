@@ -1,7 +1,6 @@
 <template>
 <div class="container">
   
-  
     Nom : {{profil.name}}
     <tr/>
     Email : {{profil.email}}
@@ -76,11 +75,6 @@ export default {
             console.log(err)
         })
          
-}
-
-
-
-}
-        
-    };
+}}
+};
 </script>

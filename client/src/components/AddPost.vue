@@ -55,10 +55,9 @@ name: "addPost",
             let user_id = localStorage.getItem("user_id")         
             let formData = new FormData();
             formData.append('file', this.file);
-            formData.append('label', this.post.label);
-            formData.append('description', this.post.description);
-            formData.append('post_type', this.post.post_type);
-            formData.append('user_id', user_id);
+            formData.append('titre', this.post.label);
+            formData.append('content', this.post.description);
+            formData.append('userId', user_id);
         this.post_type= ""
         this.description= ""
         this.label= ""

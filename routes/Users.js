@@ -3,17 +3,15 @@ const users = express.Router()
 const cors = require("cors")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+var db = require('../models/index');
 
-const User = require("../models/User")
-const Post = require("../models/Post");
+const authenticate = require("../authenticate");
 users.use(cors())
-
-process.env.SECRET_KEY = 'secret'
 
 //LIST USERS
 //Get Task list
-users.get("/list", (req, res) => {
-    User.findAll()
+users.get("/list",(req, res) => {
+    db.user.findAll()
         .then(users => {
             res.json(users)
         })
@@ -22,9 +20,10 @@ users.get("/list", (req, res) => {
         })
 })
 
+
 //GET ONE USER
 users.get('/details/:id',(req, res) => {
-    User.findOne({
+    db.user.findOne({
         where: {
             id: req.params.id
         }
@@ -39,9 +38,11 @@ users.get('/details/:id',(req, res) => {
 
 //GET ONE USER
 users.put('/update/:id',(req, res) => {
+
+    
   
     const userTO = req.body
-    User.findOne({
+    db.user.findOne({
         where: {
             id: req.params.id
         }
@@ -71,7 +72,7 @@ users.post('/register',(req, res) => {
         created_at: today,
         updated_at: today
     }
-    User.findOne({
+    db.user.findOne({
         where: {
             email: req.body.email
         }
@@ -80,7 +81,7 @@ users.post('/register',(req, res) => {
             if (!user) {
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     userData.password = hash
-                    User.create(userData)
+                    db.user.create(userData)
                         .then(user => {
                             res.json({ status:'ok','mesage':'Registered' })
                         })
@@ -93,13 +94,13 @@ users.post('/register',(req, res) => {
             }
         })
         .catch(err => {
-            res.send('error: ' + err)
+            res.send('error:: ' + err)
         })
 })
 
 //Login
 users.post('/login', (req, res) => {
-    User.findOne({
+    db.user.findOne({
         where: {
             email: req.body.email
         }
@@ -107,10 +108,9 @@ users.post('/login', (req, res) => {
         .then(user => {
             if (user) {
                 if (bcrypt.compareSync(req.body.password, user.password)) {
-                    let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
-                        expiresIn: 1440
-                    })
-                    res.send({token:token,id:user.id})
+                    let payload = { id: user.id };
+                    let token = authenticate.getToken(payload)
+                    res.status(200).json({token:token,id:user.id})
                 }
             } else {
                 res.status(400).json({ error: 'User does not exist' })
@@ -124,20 +124,20 @@ users.post('/login', (req, res) => {
 users.delete('/:userId', async (req,res)=>{
 const id = req.params.userId
 
-let posts = await Post.findAll({
+let posts = await db.Post.findAll({
     where :{
         user_id: id
     }
 })
 const ids = posts.map(elem=>elem.id)
 
-await Post.destroy({
+await db.Post.destroy({
     where: {
         id: ids
     }
 });
 
-User.destroy({
+db.user.destroy({
     where: {
     id:id
     }

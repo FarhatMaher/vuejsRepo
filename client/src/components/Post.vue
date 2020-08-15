@@ -3,10 +3,10 @@
     
     <ul>
         <li v-for="post in posts" :key="post.id">
-        <img style="height:200px; width:200px" :src="'http://localhost:3000/images/'+ post.path">
+        <img style="height:200px; width:200px" :src="'http://localhost:3000/'+ post.media.path">
        <tr/>
-        <b>Label:</b>  {{post.label}} <br>
-        <b>description : </b> {{post.description}}
+        <b>titre:</b>  {{post.titre}} <br>
+        <b>contenu : </b> {{post.content}}
           <tr/>
         <b> publie par : </b> {{post.user.name}} à {{changeDateFormat(post.created_at)}}
         </li> 
@@ -15,11 +15,11 @@
    <ul>
         <li v-for="com in comments" :key="com.id">
        {{com.user.name}} a commenté  : {{changeDateFormat(com.created_at)}} <tr/>
-       <b>commentaire :</b>  {{com.comments}} <br>
+       <b>commentaire :</b>  {{com.contenu}} <br>
         </li>
     </ul>
 
-    <input type="text" placeholder="comment" id="ex"  style="width:500px" v-model="comment.comments">
+    <input type="text" placeholder="comment" id="ex"  style="width:500px" v-model="comment.contenu">
     <button type="button" @click="addComment">Ajouter un commentaire</button>
 
 </div>
@@ -37,10 +37,10 @@ export default {
         posts: [],
         comments: [],
         comment: {
-            user_id: 0,
-            post_id: 0,
+            userId: 0,
+            postId: 0,
             status: 0,
-            comments: ""
+            contenu: ""
         }
 
     }),
@@ -63,10 +63,9 @@ export default {
         })
     },
        addComment(){
-            let user_id = parseInt(localStorage.getItem("user_id"))     
-
-           this.comment.user_id = user_id
-           this.comment.post_id = parseInt(this.post_id)
+            let user_id = localStorage.getItem("user_id")  
+           this.comment.userId = user_id
+           this.comment.postId = this.post_id
       
            console.log(this.comment)
     
