@@ -106,10 +106,10 @@ posts.delete('/:id', (req, res, next) => {
         }
     })
         .then(() => {
-            res.send('POST deleted!')
+            res.status(200).json('POST deleted!')
         })
         .catch(err => {
-            res.send('error: ' + err)
+            res.status(400).json('error: ' + err)
         })
 })
 

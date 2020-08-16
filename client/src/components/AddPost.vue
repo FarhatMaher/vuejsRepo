@@ -41,7 +41,8 @@ name: "addPost",
             post_type: "",
             user_id: ""
         },
-        file: ""
+        file: "",
+        token: localStorage.token
 
     })
 ,
@@ -64,7 +65,8 @@ name: "addPost",
 
         axios.post("http://localhost:3000/posts/create",formData, {
             headers: {
-                'Content_Type': 'multupart/form-data'
+                'Content_Type': 'multupart/form-data',
+                'Authorization': 'Bearer ' + this.token
             }
         }).then(res => { 
                 console.log(res)
@@ -75,7 +77,7 @@ name: "addPost",
          
      }
 
-        }
+}
         
 
 }

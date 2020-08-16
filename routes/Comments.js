@@ -29,7 +29,7 @@ comments.post('/add', (req, res, next) => {
         const commentData = {
             userId: req.body.userId,
             postId: req.body.postId,
-            comments: req.body.contenu,
+            contenu: req.body.contenu,
             status: 1
         }
 
@@ -94,20 +94,21 @@ comments.get('/byUser/:userId', (req, res, next) => {
 comments.put('/:id', (req, res, next) => {
 
      newComment = req.body
-    if (!req.body.comments) {
+     console.log("hihhiih" + req.params.id)
+    if (!req.body.contenu) {
         res.status(400)
         res.json({
             error: 'Bad Data'
         })
     } else {
         db.comment.update(
-            {newComment},
+            {contenu: req.body.contenu},
             { where: { id: req.params.id } }
         )
             .then(() => {
                 res.send('comment Updated!')
             })
-            .error(err => handleError(err))
+            .catch(err => handleError(err))
     
 }
 })

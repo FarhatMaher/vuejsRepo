@@ -32,9 +32,9 @@ module.exports = function(sequelize, DataTypes) {
     
     )
     Post.associate = models => {
-        Post.hasMany(models.comment);
-        Post.belongsTo(models.user);
-        Post.hasOne(models.media);
+        Post.hasMany(models.comment, { onDelete: 'cascade' });
+        Post.belongsTo(models.user, { onDelete: 'cascade' });
+        Post.hasOne(models.media, { onDelete: 'cascade' });
 
  }
         

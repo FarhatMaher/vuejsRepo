@@ -2,7 +2,7 @@ var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var passport = require('passport');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const User = require("./models/User")
+const db = require("./models/index")
 
 var opts = {};
 const secretKey = "12345-67890-09876-54321"
@@ -10,7 +10,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = secretKey;
 
 const getUser = async obj => {
-    return await User.findOne({
+    return await db.user.findOne({
     where: obj,
   });
   };

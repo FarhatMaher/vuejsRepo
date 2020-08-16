@@ -26,17 +26,20 @@ export default {
          data : {
              name: '',
              email: '',
+             token: ''
             }
      })
     ,
     mounted() {
+        this.token = localStorage.token
           this.getProfil();
     },
 
    methods: {
      register () {
         let user_id = localStorage.getItem("user_id")   
-        axios.put("http://localhost:3000/users/update/"+user_id,this.data
+        axios.put("http://localhost:3000/users/update/"+user_id,
+        this.data,this.getHeaders(this.token)
         ).then(res => { 
             console.log(res)
             router.push({name:'Profil'})
@@ -48,7 +51,8 @@ export default {
 
         getProfil(){
         let user_id = localStorage.getItem("user_id")     
-        axios.get("http://localhost:3000/users/details/"+user_id).then(res => { 
+        axios.get("http://localhost:3000/users/details/"+user_id,
+        this.getHeaders(this.token)).then(res => { 
      
 
             this.data= res.data;
@@ -57,6 +61,16 @@ export default {
             console.log(err)
         })
      }
+     ,
+ getHeaders(token) {
+
+    const config = {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }
+    return config
+}
 }
 }
 

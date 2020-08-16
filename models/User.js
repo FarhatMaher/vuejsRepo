@@ -31,8 +31,8 @@ const User = sequelize.define(
     });
 
     User.associate = models => {
-        User.hasMany(models.post);
-        User.hasMany(models.comment);
+        User.hasMany(models.post ,{ onDelete: 'cascade' });
+        User.hasMany(models.comment, { onDelete: 'cascade' });
         }
     return User
 }

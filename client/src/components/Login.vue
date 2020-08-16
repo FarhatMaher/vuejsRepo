@@ -30,7 +30,7 @@ export default { data() {
         login() { 
             axios.post('http://localhost:3000/users/login',{ email: this.email, password: this.password })
             .then(res => { 
-                localStorage.setItem('usertoken', res.data.token) 
+                localStorage.setItem('token',res.data.token) 
                 localStorage.setItem('user_id', res.data.id)
                  
                 console.log(res)

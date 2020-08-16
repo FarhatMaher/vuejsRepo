@@ -4,13 +4,12 @@ const cors = require("cors")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 var db = require('../models/index');
-
 const authenticate = require("../authenticate");
 users.use(cors())
 
 //LIST USERS
 //Get Task list
-users.get("/list",(req, res) => {
+users.get("/list",authenticate.verifyUser,(req, res) => {
     db.user.findAll()
         .then(users => {
             res.json(users)
@@ -22,7 +21,7 @@ users.get("/list",(req, res) => {
 
 
 //GET ONE USER
-users.get('/details/:id',(req, res) => {
+users.get('/details/:id',authenticate.verifyUser,(req, res) => {
     db.user.findOne({
         where: {
             id: req.params.id
@@ -36,12 +35,10 @@ users.get('/details/:id',(req, res) => {
         })
 })
 
-//GET ONE USER
-users.put('/update/:id',(req, res) => {
+//update ONE USER
+users.put('/update/:id',authenticate.verifyUser,(req, res) => {
 
-    
-  
-    const userTO = req.body
+ const userTO = req.body
     db.user.findOne({
         where: {
             id: req.params.id
@@ -59,6 +56,48 @@ users.put('/update/:id',(req, res) => {
       }
     })
 })
+
+
+//Update password
+users.put('/updatePassword/:id',authenticate.verifyUser, (req, res) => {
+
+    const data = req.body
+           db.user.findOne({
+           where: {
+               id: req.params.id
+           }
+       })
+       .then(function (user) {
+      // Check if record exists in db
+         if (user) {    
+
+           if( bcrypt.compareSync(data.password, user.password) ){
+            if(data.newPassword == data.confirmPassword){
+                 bcrypt.hash(data.newPassword, 10, (err,hash)=> {  
+           user.update(
+               {password : hash}
+           ) 
+           .then((data) =>{
+               res.status(200).json(data)
+           })
+        } );
+    
+    } else {
+        res.status(400).json({success: false , message: "verify your confirmation password"})
+    }
+        
+}
+        
+        else {
+            res.status(400).json({success: false , message: "verify your password"})
+
+           
+        }
+         } else {
+             res.status(400).json({success: false , message: "verify your password"})
+         }
+       })
+   })
 
 
 //REGISTER
@@ -121,21 +160,21 @@ users.post('/login', (req, res) => {
         })
 })
 
-users.delete('/:userId', async (req,res)=>{
+users.delete('/:userId',authenticate.verifyUser, async (req,res)=>{
 const id = req.params.userId
 
-let posts = await db.Post.findAll({
-    where :{
-        user_id: id
-    }
-})
-const ids = posts.map(elem=>elem.id)
+// let posts = await db.post.findAll({
+//     where :{
+//         userId: id
+//     }
+// })
+// const ids = posts.map(elem=>elem.id)
 
-await db.Post.destroy({
-    where: {
-        id: ids
-    }
-});
+// await db.Post.destroy({
+//     where: {
+//         id: ids
+//     }
+// });
 
 db.user.destroy({
     where: {

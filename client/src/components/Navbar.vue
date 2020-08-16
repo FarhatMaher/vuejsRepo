@@ -40,7 +40,7 @@ export default {
   data(){
     return {
       auth: '',
-      token: localStorage.usertoken,
+      token: localStorage.token,
     }
   },
   methods: {
