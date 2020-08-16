@@ -58,12 +58,8 @@ posts.post('/create',upload.single('file'), (req, res, next) => {
                    
             }
         }
-
-     
-
         const postData = req.body
         
- 
         db.post.create(postData)
             .then((post) => {
                 media.postId = post.id
@@ -133,34 +129,56 @@ posts.get('/:id', (req, res, next) => {
 
 
 // Update POST
-posts.put('/update/:id', (req, res, next) => {
-    if (!req.body.label || !req.body.description || !req.body.path || !req.body.user_id) {
+posts.put('/update/:id',upload.single('file'), (req, res, next) => {
+    const udpateData = req.body
+    console.log("maherrrrrr "+JSON.stringify(udpateData))
+    if (!req.body.titre || !req.body.content) {
         res.status(400)
         res.json({
             error: 'Bad Data'
         })
     } else {
-        var label = req.body.label;
-        var slug = label.replace(/\s/g, "-");
-        const udpateData = {
-            label: req.body.label,
-            slug: slug,
-            description: req.body.description,
-            post_type: req.body.post_type,
-            path: req.body.path,
-            status: 1,
-            user_id: req.body.user_id,
+        let media = {}
+        if(req.file){
+        
+             media = {
+                name: req.file.originalname ,
+                path: req.file.path ,
+                type: req.file.mimetype,
+                   
+            }
         }
+        const udpateData = req.body
         db.post.update(
-            {udpateData},
+            udpateData,
             { where: { id: req.params.id } }
         )
-            .then(() => {
-                res.send('POST Updated!')
+            .then((post) => {
+                if(req.file){
+                media.postId = req.params.id
+                db.media.update(
+                    media,
+                    { where: { id: req.body.idMedia } }
+                )
+                .then(() => {
+                    res.status(200).json('POST Added!')
+                })
+                .catch(err => {
+                    res.status(400).json('error: ' + err)
+                })
+            }else {
+                res.status(200).json('POST Added!')
+            }
             })
-            .error(err => handleError(err))
+            .catch(err => handleError(err))
     }
+
+    
 })
+
+
+
+
 
 
 // GET Comments by UserId

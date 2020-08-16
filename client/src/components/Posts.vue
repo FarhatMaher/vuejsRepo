@@ -10,7 +10,6 @@
         <b>description : </b> {{post.content}}
           <tr/>
         <b> publie par : </b> {{post.user.name}} à {{changeDateFormat(post.created_at)}}
-            <button v-if="post.user.id==userId" type="button" @click="deletePost(post.id)">supprimer un post</button>
 
         </li> 
         

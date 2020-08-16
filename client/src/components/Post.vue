@@ -10,6 +10,7 @@
           <tr/>
         <b> publie par : </b> {{post.user.name}} à {{changeDateFormat(post.created_at)}}
         <button v-if="post.user.id==userId" type="button" @click="deletePost(post.id)">supprimer un post</button>
+        <button v-if="post.user.id==userId" type="button" @click="goToUpdatePost()">modifier un post</button>
 
         </li> 
         
@@ -161,7 +162,11 @@ export default {
         })
    }
    
-   ,
+   ,goToUpdatePost(){
+
+                    router.push({name:'postUpdate' ,params: {id: this.post_id}})
+
+   },
       getHeaders(token) {
 
     const config = {

@@ -10,6 +10,7 @@ import Vue from "vue";
 import Post from "../components/Post"
 import profilUpdate from "../components/updateProfile"
 import updatePassword from "../components/ForgotPassword"
+import postUpdate from "../components/updatePost"
 Vue.use(VueRouter)
 const routes = [
     {
@@ -57,6 +58,11 @@ const routes = [
                 path: '/profil/updatePassword',
                 name:    'profilUpdatePassword',
                 component: updatePassword
+            },
+            {
+                path: '/post/update/:id',
+                name:    'postUpdate',
+                component: postUpdate
             }
 
 
