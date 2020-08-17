@@ -131,7 +131,7 @@ posts.get('/:id', (req, res, next) => {
 // Update POST
 posts.put('/update/:id',upload.single('file'), (req, res, next) => {
     const udpateData = req.body
-    console.log("maherrrrrr "+JSON.stringify(udpateData))
+    
     if (!req.body.titre || !req.body.content) {
         res.status(400)
         res.json({

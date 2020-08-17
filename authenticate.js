@@ -9,6 +9,12 @@ const secretKey = "12345-67890-09876-54321"
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = secretKey;
 
+//---   
+//---   HTTP  ------ >   ///  headers : {
+ // "Authorization" : "Bearer + Token "
+//}
+//--
+
 const getUser = async obj => {
     return await db.user.findOne({
     where: obj,

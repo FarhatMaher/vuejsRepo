@@ -2,8 +2,6 @@ var fs = require("fs");
 var path = require("path");
 var Sequelize = require('sequelize');
 
-
-
 var sequelize = new Sequelize("db_groupomania", "root", "root", {
     dialect: "mysql",
     logging: true
@@ -22,12 +20,11 @@ var model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
   Object.keys(db).forEach(function (modelName) {
 
     if (db[modelName].associate) {
-    console.log("maherr" +db[modelName])
     db[modelName].associate(db);
     }
     });
 
-    sequelize
+sequelize
 .authenticate()
 .then(() => {
 console.log('Connection has been established successfully.');

@@ -163,19 +163,6 @@ users.post('/login', (req, res) => {
 users.delete('/:userId',authenticate.verifyUser, async (req,res)=>{
 const id = req.params.userId
 
-// let posts = await db.post.findAll({
-//     where :{
-//         userId: id
-//     }
-// })
-// const ids = posts.map(elem=>elem.id)
-
-// await db.Post.destroy({
-//     where: {
-//         id: ids
-//     }
-// });
-
 db.user.destroy({
     where: {
     id:id

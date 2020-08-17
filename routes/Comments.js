@@ -94,7 +94,6 @@ comments.get('/byUser/:userId', (req, res, next) => {
 comments.put('/:id', (req, res, next) => {
 
      newComment = req.body
-     console.log("hihhiih" + req.params.id)
     if (!req.body.contenu) {
         res.status(400)
         res.json({
